@@ -1,0 +1,42 @@
+name: Daily Industry Research
+
+on:
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at 00:00 UTC (08:00 Beijing Time)
+
+jobs:
+  research-agent:
+    runs-on: ubuntu-latest
+    
+    # Service Container: Runs RSSHub in the background
+    services:
+      rsshub:
+        image: diygod/rsshub
+        ports:
+          - 1200:1200
+        env:
+          # Basic configuration for RSSHub
+          NODE_ENV: production
+          CACHE_TYPE: memory
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Research Pipeline
+        env:
+          # We will set these Secrets in GitHub later
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        run: python main.py
