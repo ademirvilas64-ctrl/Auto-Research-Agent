@@ -12,12 +12,14 @@ RSSHUB_BASE_URL = "http://localhost:1200"
 def skill_info_fetcher():
     print("--- Starting Skill 1: InfoFetcher ---")
     
-    # TODO: Refine these paths based on specific target sites
-    # Example RSSHub routes (need to be verified/customized)
+    # Target WeChat Official Accounts (Using 'feeddd' bridge)
+    # Format: /feeddd/origin/{WeChat_ID}
+    # Note: Using 'feeddd' or '2434' as bridge to bypass anti-crawling
     target_routes = [
-        "/qbitai/text",        # 量子位
-        "/36kr/search/article/智能驾驶", # 36Kr Search
-        # Add more routes here...
+        "/feeddd/origin/shujubang",    # 佐思汽车研究
+        "/feeddd/origin/LatePostAuto", # 晚点Auto
+        "/feeddd/origin/cheyunwang",   # 车云
+        "/feeddd/origin/Auto-Bit",     # 汽车之心
     ]
     
     collected_articles = []
